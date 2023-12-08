@@ -1,27 +1,47 @@
 import React, { createContext, useMemo, useState, useContext } from "react";
 import noop from "lodash/noop";
 
+import React, {
+  createContext,
+  useMemo,
+  useState,
+  useContext,
+  ReactNode,
+} from "react";
+import noop from "lodash/noop";
+
 type MenuIds = "first" | "second" | "last";
 type Menu = { id: MenuIds; title: string };
 
-// Додати тип Menu Selected
+// Опис типу SelectedMenu
+type SelectedMenu = {
+  id?: MenuIds;
+};
+
+// Опис типу MenuSelected
+type MenuSelected = {
+  selectedMenu: SelectedMenu;
+};
+
+// Опис типу MenuAction
+type MenuAction = {
+  onSelectedMenu: (selectedMenu: SelectedMenu) => void;
+};
 
 const MenuSelectedContext = createContext<MenuSelected>({
   selectedMenu: {},
 });
 
-// Додайте тип MenuAction
-
 const MenuActionContext = createContext<MenuAction>({
   onSelectedMenu: noop,
 });
 
+// Опис типу PropsProvider
 type PropsProvider = {
-  children; // Додати тип для children
+  children: ReactNode;
 };
 
 function MenuProvider({ children }: PropsProvider) {
-  // Додати тип для SelectedMenu він повинен містити { id }
   const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>({});
 
   const menuContextAction = useMemo(
@@ -47,8 +67,9 @@ function MenuProvider({ children }: PropsProvider) {
   );
 }
 
+// Опис типу PropsMenu
 type PropsMenu = {
-  menus; // Додайте вірний тип для меню
+  menus: Menu[];
 };
 
 function MenuComponent({ menus }: PropsMenu) {
